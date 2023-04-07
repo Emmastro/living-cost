@@ -1,11 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import CardHeader from "@mui/material/CardHeader";
+import TextField from "@mui/material/TextField";
 import CssBaseline from "@mui/material/CssBaseline";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
@@ -15,9 +11,28 @@ import Container from "@mui/material/Container";
 import { Footer } from "../components/Footer";
 import { MenuBar } from "../components/MenuBar";
 
+const GETFORM_API = `https://getform.io/f/${process.env.REACT_APP_GETFORM_API_KEY}`;
 
 export const Contact = () => {
- 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const form = document.getElementById("contact-form");
+    const data = new FormData(form);
+    const xhr = new XMLHttpRequest();
+    xhr.open(form.method, form.action);
+    xhr.setRequestHeader("Accept", "application/json");
+    xhr.onreadystatechange = () => {
+      if (xhr.readyState !== XMLHttpRequest.DONE) return;
+      if (xhr.status === 200) {
+        form.reset();
+        alert("Thank you for your message!");
+      } else {
+        alert("Oops! There was a problem.");
+      }
+    };
+    xhr.send(data);
+  };
+
   return (
     <React.Fragment>
       <GlobalStyles
@@ -32,7 +47,7 @@ export const Contact = () => {
       >
         <MenuBar />
       </AppBar>
-      {/* Hero unit */}
+
       <Container
         disableGutters
         maxWidth="lg"
@@ -46,27 +61,62 @@ export const Contact = () => {
           color="text.primary"
           gutterBottom
         >
-          Compare the cost of living between 2 capitals
+          Contact us
         </Typography>
-        <Typography
-          variant="h5"
-          align="center"
-          color="text.secondary"
-          component="p"
-        >
-          Welcome to our website where you can compare the cost of living
-          between two of the world's most vibrant capitals. We understand that
-          moving to a new city can be a daunting experience, especially when it
-          comes to budgeting for everyday expenses. Our website aims to provide
-          you with the tools and information you need to make an informed
-          decision about where to live. We compare the cost of living between
-          two cities, taking into account factors such as housing,
-          transportation, food, and entertainment. Our data is updated regularly
-          to ensure accuracy and reliability. Whether you're a student, a
-          professional, or a family, our website is the perfect resource for
-          anyone looking to make a smart financial decision when it comes to
-          choosing a new city to call home.
-        </Typography>
+        <Grid container direction="column" justify="center" alignItems="center">
+          <form id="contact-form" method="post" action={GETFORM_API}>
+            <Grid item>
+              <TextField
+                fullWidth
+                required
+                id="name"
+                label="Name"
+                name="userName"
+                margin="normal"
+              />
+            </Grid>
+            <Grid item>
+              <TextField
+                fullWidth
+                required
+                id="email"
+                label="Email"
+                name="email"
+                margin="normal"
+              />
+            </Grid>
+            <Grid item>
+              <TextField
+                fullWidth
+                required
+                id="message"
+                label="Message"
+                name="message"
+                margin="normal"
+                multiline
+                rows={4}
+                rowsMax="5"
+              />
+            </Grid>
+            <Grid
+              container
+              direction="row"
+              spacing={2}
+              style={{ marginTop: 20 }}
+            >
+              <Grid item>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  onClick={handleSubmit}
+                >
+                  Submit
+                </Button>
+              </Grid>
+            </Grid>
+          </form>
+        </Grid>
       </Container>
 
       <Footer />

@@ -2,9 +2,7 @@ import React, { useEffect, useState, useMemo } from "react";
 import AppBar from "@mui/material/AppBar";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-import CardHeader from "@mui/material/CardHeader";
 import CssBaseline from "@mui/material/CssBaseline";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
@@ -14,7 +12,12 @@ import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import CardMedia from "@mui/material/CardMedia";
 
-import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api";
+import {
+  GoogleMap,
+  Marker,
+  useLoadScript,
+  InfoWindow,
+} from "@react-google-maps/api";
 
 import { Footer } from "../components/Footer";
 import { MenuBar } from "../components/MenuBar";
@@ -25,11 +28,6 @@ import {
   getCapitalCostOfLiving,
   getCitiesForCostOfLiving,
 } from "../services/api";
-
-const containerStyle = {
-  width: "400px",
-  height: "400px",
-};
 
 const ImgMediaCard = ({ data }) => {
   console.log("data img", data, data.flag);
@@ -77,7 +75,9 @@ export const CompareCostOfLiving = () => {
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY,
   });
-  console.log("isLoaded", isLoaded);
+
+  const [activeMarker, setActiveMarker] = useState(null);
+
   const center = useMemo(() => ({ lat: 18.52043, lng: 73.856743 }), []);
 
   const [selectCapital1, setSelectCapital1] = useState(null);
@@ -111,6 +111,13 @@ export const CompareCostOfLiving = () => {
     }
   }, []);
 
+  const handleActiveMarker = (marker) => {
+    if (marker === activeMarker) {
+      return;
+    }
+    setActiveMarker(marker);
+  };
+
   const test = () => {
     const capital1 = "";
     const country1 = "";
@@ -141,7 +148,7 @@ export const CompareCostOfLiving = () => {
   };
 
   const compareCapitals = () => {
-    test();
+    //test();
     if (selectCapital1 && selectCapital2) {
       const [capital1, country1] = selectCapital1.split(" - ");
       const [capital2, country2] = selectCapital2.split(" - ");
@@ -204,6 +211,7 @@ export const CompareCostOfLiving = () => {
       setSelectCapital2(event.target.value);
     }
   };
+
   return (
     <React.Fragment>
       <GlobalStyles
@@ -286,6 +294,8 @@ export const CompareCostOfLiving = () => {
           </Grid>
 
           <Grid item xs={12}>
+            {/* {JSON.stringify({ lat: Number.parseFloat(state.countryFacts1?.latlng[1]), lng: Number.parseFloat(state.countryFacts1[0]) })}
+             */}
             {!isLoaded ? (
               <h1>Loading...</h1>
             ) : (
@@ -293,10 +303,42 @@ export const CompareCostOfLiving = () => {
                 <GoogleMap
                   mapContainerClassName="map-container"
                   center={center}
-                  zoom={10}
+                  zoom={2}
                 >
-                  <Marker position={center} />
-                  
+                  {/* {state.countryFacts1 ? <Marker position={{ lat: -27, lng: 133 }} /> : null} */}
+
+                  {state.countryFacts1 ? (
+                    <Marker
+                      onClick={() => handleActiveMarker(1)}
+                      position={{
+                        lat: state.countryFacts1.latlng[1],
+                        lng: state.countryFacts1.latlng[0],
+                      }}
+                    >
+                      {activeMarker === 1 ? (
+                        <InfoWindow onCloseClick={() => setActiveMarker(null)}>
+                          <div>{state.countryFacts1.name.common}</div>
+                        </InfoWindow>
+                      ) : null}
+                    </Marker>
+                  ) : null}
+                  {state.countryFacts2 ? (
+                    <Marker
+                      onClick={() =>
+                        handleActiveMarker(2)
+                      }
+                      position={{
+                        lat: state.countryFacts2.latlng[0],
+                        lng: state.countryFacts2.latlng[1],
+                      }}
+                    >
+                      {activeMarker === 2 ? (
+                        <InfoWindow onCloseClick={() => setActiveMarker(null)}>
+                          <div>{state.countryFacts2.name.common}</div>
+                        </InfoWindow>
+                      ) : null}
+                    </Marker>
+                  ) : null}
                 </GoogleMap>
               </div>
             )}

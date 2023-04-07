@@ -69,7 +69,7 @@ const headCells = [
     numeric: true,
     disablePadding: false,
     label: "Average cost - Capital 2",
-  }
+  },
 ];
 
 function EnhancedTableHead(props) {
@@ -179,7 +179,6 @@ EnhancedTableToolbar.propTypes = {
 };
 
 export const CostOfLiving = (props) => {
- 
   const { costOfLiving1, costOfLiving2 } = props;
 
   const [order, setOrder] = React.useState("asc");
@@ -206,22 +205,23 @@ export const CostOfLiving = (props) => {
     do {
       const good1 = capital1Price.shift();
       const good2 = capital2Price.shift();
-      console.log("good1", good1);
-      console.log("good2", good2);
+      // console.log("good1", good1);
+      // console.log("good2", good2);
 
-      //update rows state
-      setRows((rows) => [
-        ...rows,
-        {
-          name: good1.item_name,
-          capital2: {
-            ...good2,
+      if (good1 && good2) {
+        setRows((rows) => [
+          ...rows,
+          {
+            name: good1.item_name,
+            capital2: {
+              ...good2,
+            },
+            capital1: {
+              ...good1,
+            },
           },
-          capital1: {
-            ...good1,
-          },
-        },
-      ]);
+        ]);
+      }
     } while (capital1Price.length > 0 || capital2Price.length > 0);
   }
 
@@ -329,8 +329,12 @@ export const CostOfLiving = (props) => {
                       <TableCell align="right">
                         {row.capital1.category_name}
                       </TableCell>
-                      <TableCell align="right">{row.capital1.usd.avg}</TableCell>
-                      <TableCell align="right">{row.capital2.usdb.avg}</TableCell>
+                      <TableCell align="right">
+                        {row.capital1.usd?.avg}
+                      </TableCell>
+                      <TableCell align="right">
+                        {row.capital2.usd?.avg}
+                      </TableCell>
                     </TableRow>
                   );
                 })}

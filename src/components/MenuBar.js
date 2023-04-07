@@ -16,30 +16,7 @@ export const MenuBar = () => {
         >
           Cost of Living
         </Link>
-        <Link
-          variant="button"
-          color="text.primary"
-          href="/currency-conversion"
-          sx={{ my: 1, mx: 1.5 }}
-        >
-          Currency conversion
-        </Link>
-        <Link
-          variant="button"
-          color="text.primary"
-          href="/map-view"
-          sx={{ my: 1, mx: 1.5 }}
-        >
-          Map view
-        </Link>
-        <Link
-          variant="button"
-          color="text.primary"
-          href="/explore-countries"
-          sx={{ my: 1, mx: 1.5 }}
-        >
-          Explore countries
-        </Link>
+
         <Link
           variant="button"
           color="text.primary"
@@ -55,14 +32,6 @@ export const MenuBar = () => {
           sx={{ my: 1, mx: 1.5 }}
         >
           Contact us
-        </Link>
-        <Link
-          variant="button"
-          color="text.primary"
-          href="/support"
-          sx={{ my: 1, mx: 1.5 }}
-        >
-          Support
         </Link>
       </nav>
     </Toolbar>
