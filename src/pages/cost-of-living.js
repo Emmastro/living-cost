@@ -51,8 +51,8 @@ const ImgMediaCard = ({ data }) => {
             <li>Area: {data.area}</li>
             <li>Region: {data.region}</li>
             <li>Subregion: {data.subregion}</li>
-            <li>Currency: {JSON.stringify(Object.values(data.currencies))}</li>
-            <li>Language: {JSON.stringify(Object.values(data.languages))}</li>
+            <li>Currency: {Object.values(data.currencies)[0].name}</li>
+            <li>Language: {Object.values(data.languages).map((item) => `${item} | `)}</li>
           </ul>
         </Typography>
       </CardContent>

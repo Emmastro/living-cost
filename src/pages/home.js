@@ -5,9 +5,8 @@ import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-import CardHeader from "@mui/material/CardHeader";
 import CssBaseline from "@mui/material/CssBaseline";
-import Grid from "@mui/material/Grid";
+import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 import GlobalStyles from "@mui/material/GlobalStyles";
 import Container from "@mui/material/Container";
@@ -47,7 +46,7 @@ export const Home = () => {
           Living Cost
         </Typography>
         <Typography
-          variant="h5"
+          variant="h6"
           align="center"
           color="text.secondary"
           component="p"
@@ -65,6 +64,8 @@ export const Home = () => {
           anyone looking to make a smart financial decision when it comes to
           choosing a new city to call home.
         </Typography>
+
+        <Link href="/cost-of-living" ><Button variant="contained">Get started</Button></Link>
       </Container>
 
       <Footer />

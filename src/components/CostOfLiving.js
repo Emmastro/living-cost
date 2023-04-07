@@ -44,34 +44,6 @@ function stableSort(array, comparator) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-const headCells = [
-  {
-    id: "name",
-    numeric: false,
-    disablePadding: true,
-    label: "Goods",
-  },
-  {
-    id: "categories",
-    numeric: false,
-    disablePadding: false,
-    label: "Categories",
-  },
-  {
-    id: "Average cost - Capital 1",
-    numeric: true,
-    disablePadding: false,
-    label: "Average cost - Capital 1",
-  },
-
-  {
-    id: "Average cost - Capital 2",
-    numeric: true,
-    disablePadding: false,
-    label: "Average cost - Capital 2",
-  },
-];
-
 function EnhancedTableHead(props) {
   const {
     onSelectAllClick,
@@ -80,6 +52,7 @@ function EnhancedTableHead(props) {
     numSelected,
     rowCount,
     onRequestSort,
+    headCells,
   } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
@@ -200,6 +173,35 @@ export const CostOfLiving = (props) => {
   console.log("Not null", capital1Price, capital2Price);
   //TODO: make sure capital1Price and capital2Price have the same size, and the good ids are aligned
 
+  console.log("costOfLiving1", costOfLiving1);
+  const headCells = [
+    {
+      id: "name",
+      numeric: false,
+      disablePadding: true,
+      label: "Goods",
+    },
+    {
+      id: "categories",
+      numeric: false,
+      disablePadding: false,
+      label: "Categories",
+    },
+    {
+      id: `Average cost - ${costOfLiving1.city_name}`,
+      numeric: true,
+      disablePadding: false,
+      label: `Average cost - ${costOfLiving1.city_name}`,
+    },
+
+    {
+      id: `Average cost - ${costOfLiving2.city_name}`,
+      numeric: true,
+      disablePadding: false,
+      label: `Average cost - ${costOfLiving2.city_name}`,
+    },
+  ];
+  
   //if rows is empty
   if (rows.length === 0) {
     do {
@@ -291,6 +293,7 @@ export const CostOfLiving = (props) => {
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
               rowCount={rows.length}
+              headCells={headCells}
             />
             <TableBody>
               {stableSort(rows, getComparator(order, orderBy))
@@ -360,6 +363,7 @@ export const CostOfLiving = (props) => {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
+      graps
     </Box>
   );
 };

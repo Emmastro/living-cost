@@ -15,31 +15,27 @@ const options_cost_of_living = {
   headers: {
     "X-RapidAPI-Key": REACT_APP_COST_OF_LIVING_KEY,
     "X-RapidAPI-Host": "cost-of-living-and-prices.p.rapidapi.com",
-    //no cors
     "Access-Control-Allow-Origin": "*",
-
   },
 };
 
 export const getCountriesFacts = async () => {
-  
-  return await fetch('facts.json').then((response) => response.json());
+  //used for testing offline
+  // return await fetch('facts.json').then((response) => response.json());
 
-  // return await fetch(
-  //   "https://country-facts.p.rapidapi.com/all",
-  //   options_countries_facts
-  // ).then((response) => {
-  //   if (response.status === 429) {
-  //     alert(response.json());
-  //     return null;
-  //   }
-  //   return response.json();
-  // });
+  return await fetch(
+    "https://country-facts.p.rapidapi.com/all",
+    options_countries_facts
+  ).then((response) => {
+    if (response.status === 429) {
+      alert("You have exceeded the number of requests per minute");
+      return null;
+    }
+    return response.json();
+  });
 };
 
-
 export const getCitiesForCostOfLiving = async () => {
-
   return await fetch(
     `https://cost-of-living-and-prices.p.rapidapi.com/cities`,
     options_cost_of_living
@@ -50,23 +46,22 @@ export const getCitiesForCostOfLiving = async () => {
     }
     return response.json();
   });
-}
+};
 
 export const getCapitalCostOfLiving = async (capital, country) => {
-
   //read from file json file locally
-  return await fetch('paris.json').then((response) => response.json());
+  // return await fetch("paris.json").then((response) => response.json());
 
-  // return await fetch(
-  //   `https://country-facts.p.rapidapi.com/prices?country_name=${country}&city_name=${capital}`,
-  //   options_cost_of_living
-  // ).then((response) => {
-  //   if (response.status === 429) {
-  //     alert(response.json());
-  //     return null;
-  //   }
-  //   return response.json();
-  // });
+  return await fetch(
+    `https://country-facts.p.rapidapi.com/prices?country_name=${country}&city_name=${capital}`,
+    options_cost_of_living
+  ).then((response) => {
+    if (response.status === 429) {
+      alert(response.json());
+      return null;
+    }
+    return response.json();
+  });
 };
 
 export const get_country_capital = async (country) => {
