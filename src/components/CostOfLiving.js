@@ -16,6 +16,7 @@ import Paper from "@mui/material/Paper";
 import Checkbox from "@mui/material/Checkbox";
 import { visuallyHidden } from "@mui/utils";
 
+
 const descendingComparator = (a, b, orderBy) => {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -25,6 +26,11 @@ const descendingComparator = (a, b, orderBy) => {
   }
   return 0;
 };
+
+function getAvg(array) {
+  const total = array.reduce((acc, c) => acc + c, 0);
+  return total / array.length;
+}
 
 const getComparator = (order, orderBy) => {
   return order === "desc"
@@ -163,14 +169,14 @@ export const CostOfLiving = (props) => {
 
   //check if the props are not null
   if (!costOfLiving1 || !costOfLiving2) {
-    console.log(costOfLiving1, costOfLiving1, props);
+    // console.log(costOfLiving1, costOfLiving1, props);
     return <div>Missing data for comparaison</div>;
   }
 
   const capital1Price = costOfLiving1.prices;
   const capital2Price = costOfLiving2.prices;
 
-  console.log("Not null", capital1Price, capital2Price);
+  // console.log("Not null", capital1Price, capital2Price);
   //TODO: make sure capital1Price and capital2Price have the same size, and the good ids are aligned
 
   console.log("costOfLiving1", costOfLiving1);
@@ -201,7 +207,7 @@ export const CostOfLiving = (props) => {
       label: `Average cost - ${costOfLiving2.city_name}`,
     },
   ];
-  
+
   //if rows is empty
   if (rows.length === 0) {
     do {
@@ -275,6 +281,64 @@ export const CostOfLiving = (props) => {
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+
+  const get_grouped_category_prices = (country) => {
+    let grouped_prices = {};
+
+    let arr = [];
+    // console.log("country looping: ", country);
+    country.forEach((item) => {
+      if (grouped_prices[item.category_name] !== undefined) {
+        console.log("pushing", item.usd?.avg, grouped_prices);
+
+        grouped_prices = {
+          ...grouped_prices,
+          [item.category_name]: [
+            ...grouped_prices[item.category_name],
+            Number.parseFloat(item.usd?.avg),
+          ],
+        };
+      } else {
+        // console.log("creating", item.usd?.avg, grouped_prices);
+        arr = new Array(Number.parseFloat(item.usd?.avg), 0);
+        // console.log("arr", arr);
+        grouped_prices = { ...grouped_prices, [item.category_name]: arr };
+      }
+
+      let data = {
+        labels: ["Red", "Orange", "Blue"],
+        datasets: [
+          {
+            label: "Popularity of colours",
+            data: [55, 23, 96],
+            // you can set indiviual colors for each bar
+            backgroundColor: [
+              "rgba(255, 255, 255, 0.6)",
+              "rgba(255, 255, 255, 0.6)",
+              "rgba(255, 255, 255, 0.6)",
+            ],
+            borderWidth: 1,
+          },
+        ],
+      };
+
+    
+
+      return data;
+    });
+
+    // get average of price in each category
+    for (const [key, value] of Object.entries(grouped_prices)) {
+      const average = getAvg(value);
+      // console.log("key average", key, value, average);
+      grouped_prices = {
+        ...grouped_prices,
+        [key]: average,
+      };
+    }
+
+    // console.log("grouped_prices", grouped_prices);
+  };
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -363,7 +427,8 @@ export const CostOfLiving = (props) => {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
-      graps
+      {/* TODO: add barchar with aggregation from get_grouped_category_prices */}
     </Box>
   );
+  
 };

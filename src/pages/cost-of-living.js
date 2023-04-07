@@ -12,6 +12,7 @@ import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import CardMedia from "@mui/material/CardMedia";
 
+
 import {
   GoogleMap,
   Marker,
@@ -30,7 +31,7 @@ import {
 } from "../services/api";
 
 const ImgMediaCard = ({ data }) => {
-  console.log("data img", data, data.flag);
+  // console.log("data img", data, data.flag);
   return (
     <Card sx={{ maxWidth: 400 }}>
       <CardMedia
@@ -71,7 +72,7 @@ export const CompareCostOfLiving = () => {
     countryFacts2: null,
   });
 
-  console.log(process.env.REACT_APP_GOOGLE_API_KEY);
+  // console.log(process.env.REACT_APP_GOOGLE_API_KEY);
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY,
   });
@@ -99,7 +100,7 @@ export const CompareCostOfLiving = () => {
           listOfCapitals = [...new Set(listOfCapitals.map(JSON.stringify))].map(
             JSON.parse
           );
-          console.log("unique: ", listOfCapitals);
+          // console.log("unique: ", listOfCapitals);
           setState({
             ...state,
             countries_facts: data[1],
@@ -125,20 +126,20 @@ export const CompareCostOfLiving = () => {
     const country2 = "";
     const costOfLiving1 = getCapitalCostOfLiving(capital1, country1).then(
       (data) => {
-        console.log("data", data);
+        // console.log("data", data);
         return data;
       }
     );
 
     const costOfLiving2 = getCapitalCostOfLiving(capital2, country2).then(
       (data) => {
-        console.log("data2", data);
+        // console.log("data2", data);
         return data;
       }
     );
 
     Promise.all([costOfLiving1, costOfLiving2]).then((values) => {
-      console.log("values", values);
+      // console.log("values", values);
       setState({
         ...state,
         costOfLiving1: values[0],
@@ -155,20 +156,20 @@ export const CompareCostOfLiving = () => {
 
       const costOfLiving1 = getCapitalCostOfLiving(capital1, country1).then(
         (data) => {
-          console.log("data", data);
+          // console.log("data", data);
           return data;
         }
       );
 
       const costOfLiving2 = getCapitalCostOfLiving(capital2, country2).then(
         (data) => {
-          console.log("data2", data);
+          // console.log("data2", data);
           return data;
         }
       );
 
       Promise.all([costOfLiving1, costOfLiving2]).then((values) => {
-        console.log("values", values);
+        // console.log("values", values);
         setState({
           ...state,
           costOfLiving1: values[0],
@@ -177,7 +178,7 @@ export const CompareCostOfLiving = () => {
       });
     } else {
       //TODO: show message on the UI without using alert
-      console.log("Please select 2 capitals to compare");
+      // console.log("Please select 2 capitals to compare");
       setState({
         ...state,
         costOfLiving1: null,
@@ -190,15 +191,15 @@ export const CompareCostOfLiving = () => {
   const { listOfCapitals } = state;
 
   const showCountryFacts = (event, capitalId) => {
-    console.log("showing country facts", capitalId, event);
-    console.log(state.countries_facts);
+    // console.log("showing country facts", capitalId, event);
+    // console.log(state.countries_facts);
     if (capitalId === 1) {
       const [capital1, country1] = event.target.value.split(" - ");
 
       const countryFacts = state.countries_facts.filter(
         (country) => country.name.common === country1
       )[0];
-      console.log("countryFacts2", countryFacts);
+      // console.log("countryFacts2", countryFacts);
       setState({ ...state, countryFacts1: countryFacts });
       setSelectCapital1(event.target.value);
     } else {
@@ -206,7 +207,7 @@ export const CompareCostOfLiving = () => {
       const countryFacts = state.countries_facts.filter(
         (country) => country.name.common === country2
       )[0];
-      console.log("countryFacts2", countryFacts);
+      // console.log("countryFacts2", countryFacts);
       setState({ ...state, countryFacts2: countryFacts });
       setSelectCapital2(event.target.value);
     }
@@ -311,8 +312,8 @@ export const CompareCostOfLiving = () => {
                     <Marker
                       onClick={() => handleActiveMarker(1)}
                       position={{
-                        lat: state.countryFacts1.latlng[1],
-                        lng: state.countryFacts1.latlng[0],
+                        lat: state.countryFacts1.latlng[0],
+                        lng: state.countryFacts1.latlng[1],
                       }}
                     >
                       {activeMarker === 1 ? (
